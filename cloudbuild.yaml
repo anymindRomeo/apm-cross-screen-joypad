@@ -1,0 +1,28 @@
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/apm-cross-screen-joypad', '.']
+    
+  # Push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/apm-cross-screen-joypad']
+    
+  # Deploy container image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'apm-cross-screen-joypad'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/apm-cross-screen-joypad'
+      - '--region'
+      - 'asia-east1' # You can change this region if needed
+      - '--allow-unauthenticated'
+
+images:
+  - 'gcr.io/$PROJECT_ID/apm-cross-screen-joypad'
+
+# This fixes the logging error when using a custom service account
+options:
+  logging: CLOUD_LOGGING_ONLY

@@ -65,9 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
         @keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } }
 
         /* UI Overlays */
-        #qr-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,255,255,0.95); padding: 30px; border-radius: 15px; text-align: center; z-index: 5000; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-        #qr-container h2 { margin-top: 0; color: #2c3e50; font-size: 28px; }
-        #qr-container p { font-size: 18px; font-weight: bold; background: #ecf0f1; padding: 15px; border-radius: 8px; color: #34495e; word-break: break-all; max-width: 300px; margin-bottom: 0; }
+        #qr-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,255,255,0.95); padding: 30px; border-radius: 15px; text-align: center; z-index: 5000; box-shadow: 0 10px 20px rgba(0,0,0,0.5); display: flex; flex-direction: column; align-items: center; }
+        #qr-container h2 { margin-top: 0; color: #2c3e50; font-size: 28px; margin-bottom: 20px; }
+        #qrcode { margin-bottom: 20px; }
+        #qr-container p { font-size: 16px; font-weight: bold; background: #ecf0f1; padding: 10px; border-radius: 8px; color: #34495e; word-break: break-all; max-width: 250px; margin-bottom: 0; }
 
         #banner-modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 6000; display: none; align-items: center; justify-content: center; flex-direction: column; text-align: center; }
         .win { color: #2ecc71; font-size: 60px; font-weight: bold; text-shadow: 0 5px 15px rgba(46, 204, 113, 0.5); }
@@ -93,12 +94,23 @@ document.addEventListener('DOMContentLoaded', () => {
         
         <div id="qr-container">
             <h2>Scan to Play!</h2>
+            <div id="qrcode"></div>
             <p>${controllerUrl}</p>
         </div>
         <div id="banner-modal"></div>
     `;
 
     document.body.appendChild(wrapper);
+
+    // Generate QR Code
+    new QRCode(document.getElementById("qrcode"), {
+        text: controllerUrl,
+        width: 200,
+        height: 200,
+        colorDark : "#2c3e50",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+    });
 
     // Game state
     const clip1 = document.getElementById('clip1');
